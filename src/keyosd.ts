@@ -673,7 +673,7 @@ export class KeyOSD {
 
   public enable(): void {
     this.options.enabled = true;
-    this.overlay.style.display = "";
+    this.overlay.style.display = "flex";
     document.addEventListener(
       "keydown",
       this.handleKeyDown,
