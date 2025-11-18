@@ -22,9 +22,10 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "npm run build:lib && npm run build:standalone",
+    "build": "npm run build:lib && npm run build:standalone && npm run build:copy-standalone",
     "build:lib": "tsc && vite build",
     "build:standalone": "BUILD_MODE=standalone vite build",
+    "build:copy-standalone": "cp dist-standalone/keyosd.standalone.* dist/",
     "build:demo": "BUILD_MODE=demo vite build",
     "preview": "vite preview",
     "format": "prettier --write .",

@@ -13,7 +13,7 @@ export default defineConfig({
   base: isDemoMode ? "./" : undefined,
   plugins: isDemoMode
     ? []
-    : [dts({ include: ["src"], exclude: ["src/standalone.ts"] })],
+    : [dts({ include: ["src"], exclude: ["src/standalone.ts", "src/main.ts"] })],
   build: isDemoMode
     ? {
         outDir: "dist-demo",
@@ -24,6 +24,7 @@ export default defineConfig({
         },
       }
     : {
+        outDir: isStandalone ? "dist-standalone" : "dist",
         lib: {
           entry: resolve(
             __dirname,
