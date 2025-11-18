@@ -1,5 +1,5 @@
 {
-  "name": "@microbit-foundation/keyosd",
+  "name": "@microbit/keyosd",
   "version": "0.0.0-local",
   "description": "Display keystrokes and shortcuts in an on-screen overlay",
   "type": "module",
