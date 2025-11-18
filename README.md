@@ -9,6 +9,9 @@ Display keystrokes and shortcuts in an on-screen overlay inside a web app.
 Built for user testing keyboard interactions in an environment where installing
 tools like [KeyCastr](https://github.com/keycastr/keycastr) is not viable.
 
+This utility is maintained by the Micro:bit Educational Foundation as time
+permits. It is not a core project and comes with no support commitments.
+
 You can integrate it in your app or user testing environment with a simple script tag or for ad hoc testing use a bookmarklet to run it in a page you don't control.
 
 ## Features
