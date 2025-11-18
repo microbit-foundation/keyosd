@@ -107,7 +107,7 @@ window.keyosd.clear();
 Import and initialize manually for more control (styles are automatically injected):
 
 ```typescript
-import { KeyOSD } from "keyosd";
+import { KeyOSD } from "@microbit-foundation/keyosd";
 
 // Initialize with default options
 const keyosd = new KeyOSD();
@@ -116,7 +116,7 @@ const keyosd = new KeyOSD();
 ### With options
 
 ```typescript
-import { KeyOSD } from "keyosd";
+import { KeyOSD } from "@microbit-foundation/keyosd";
 
 const keyosd = new KeyOSD({
   container: document.body, // Container element (default: document.body)
