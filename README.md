@@ -2,7 +2,7 @@
 
 Display keystrokes and shortcuts in an on-screen overlay inside a web app.
 
-!["Screen capture showing hello world Cmd+C Cmd+V being displayed as they are typed"](https://github.com/user-attachments/assets/8a0fadbc-0da1-4f8a-9303-5e51b7b6b933)
+!["Screen capture showing hello world Cmd+C Cmd+V being displayed as they are typed"](https://github.com/user-attachments/assets/fafe1542-05e1-4ac5-a0ed-604d9ba2376e)
 
 [Try it now](https://microbit-foundation.github.io/keyosd/)
 
