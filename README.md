@@ -4,7 +4,7 @@ Display keystrokes and shortcuts in an on-screen overlay inside a web app.
 
 !["Screen capture showing hello world Cmd+C Cmd+V being displayed as they are typed"](https://github.com/user-attachments/assets/8a0fadbc-0da1-4f8a-9303-5e51b7b6b933)
 
-[Try it now](https://microbit-matt-hillsdon.github.io/keyosd/)
+[Try it now](https://microbit-foundation.github.io/keyosd/)
 
 Built for user testing keyboard interactions in an environment where installing
 tools like [KeyCastr](https://github.com/keycastr/keycastr) is not viable.
@@ -43,7 +43,7 @@ There might be a better compromise position here and feedback is welcome from us
 Bookmarklet to copy paste as the bookmark URL ([what's a bookmarklet?](https://en.wikipedia.org/wiki/Bookmarklet)):
 
 ```
-javascript:(function() { document.body.appendChild(document.createElement("script")).src = "https://microbit-matt-hillsdon.github.io/keyosd/v0/keyosd.js"})()
+javascript:(function() { document.body.appendChild(document.createElement("script")).src = "https://microbit-foundation.github.io/keyosd/v0/keyosd.js"})()
 ```
 
 Note you might hit [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP) errors. There's nothing that can be done with this project in that case if you can't modify the app.
@@ -55,7 +55,7 @@ Note you might hit [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guide
 Include the script in your HTML file. KeyOSD will automatically initialize:
 
 ```html
-<script src="https://microbit-matt-hillsdon.github.io/keyosd/v0/keyosd.js"></script>
+<script src="https://microbit-foundation.github.io/keyosd/v0/keyosd.js"></script>
 ```
 
 #### Positioning
@@ -64,11 +64,11 @@ Configure the overlay position using data attributes on the script tag:
 
 ```html
 <!-- Default: bottom-right corner, 16px offset -->
-<script src="https://microbit-matt-hillsdon.github.io/keyosd/v0/keyosd.js"></script>
+<script src="https://microbit-foundation.github.io/keyosd/v0/keyosd.js"></script>
 
 <!-- Custom position: 215px from right, 4px from bottom -->
 <script
-  src="https://microbit-matt-hillsdon.github.io/keyosd/v0/keyosd.js"
+  src="https://microbit-foundation.github.io/keyosd/v0/keyosd.js"
   data-anchor="bottom-right"
   data-x-offset="215"
   data-y-offset="4"
@@ -76,7 +76,7 @@ Configure the overlay position using data attributes on the script tag:
 
 <!-- Top-left corner -->
 <script
-  src="https://microbit-matt-hillsdon.github.io/keyosd/v0/keyosd.js"
+  src="https://microbit-foundation.github.io/keyosd/v0/keyosd.js"
   data-anchor="top-left"
 ></script>
 ```
