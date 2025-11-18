@@ -1,6 +1,6 @@
 {
   "name": "keyosd",
-  "version": "0.0.0-dev",
+  "version": "0.0.0-local",
   "description": "Display keystrokes and shortcuts in an on-screen overlay",
   "type": "module",
   "main": "./dist/keyosd.umd.cjs",
