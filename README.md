@@ -102,7 +102,11 @@ window.keyosd.clear();
 
 ### As a module
 
-**⚠️ Not yet published to NPM**
+Install the package:
+
+```bash
+npm install @microbit/keyosd
+```
 
 Import and initialize manually for more control (styles are automatically injected):
 
