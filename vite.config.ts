@@ -1,3 +1,7 @@
+// (c) 2025, Micro:bit Educational Foundation and contributors
+//
+// SPDX-License-Identifier: MIT
+
 import { defineConfig } from "vite";
 import { resolve } from "path";
 import dts from "vite-plugin-dts";

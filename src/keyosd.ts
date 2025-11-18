@@ -1,3 +1,7 @@
+// (c) 2025, Micro:bit Educational Foundation and contributors
+//
+// SPDX-License-Identifier: MIT
+
 import type { KeyOSDOptions, ModifierStates } from "./types";
 import styles from "./keyosd.css?raw";
 

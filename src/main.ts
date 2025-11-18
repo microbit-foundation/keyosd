@@ -1,3 +1,7 @@
+// (c) 2025, Micro:bit Educational Foundation and contributors
+//
+// SPDX-License-Identifier: MIT
+
 import { KeyOSD } from "./keyosd";
 
 const keyosd = new KeyOSD();

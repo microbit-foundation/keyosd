@@ -1,3 +1,7 @@
+// (c) 2025, Micro:bit Educational Foundation and contributors
+//
+// SPDX-License-Identifier: MIT
+
 export interface KeyOSDOptions {
   /** Container element to attach the visualization to. Defaults to document.body */
   container?: HTMLElement;
