@@ -29,7 +29,10 @@ export class KeyOSD {
     meta: false,
   };
   private options: Required<KeyOSDOptions>;
+  private resizeHandle: HTMLElement;
   private isDragging = false;
+  private isResizing = false;
+  private scale = 1;
   private dragOffset = { x: 0, y: 0 };
   private anchorCorner:
     | "top-left"
@@ -65,6 +68,7 @@ export class KeyOSD {
     this.container = this.options.container;
     this.overlay = this.createOverlay();
     this.closeButton = this.createCloseButton();
+    this.resizeHandle = this.createResizeHandle();
     this.displayArea = this.createDisplayArea();
     this.modifiersArea = this.createModifiersArea();
 
@@ -88,6 +92,19 @@ export class KeyOSD {
       </svg>
     `;
     return button;
+  }
+
+  private createResizeHandle(): HTMLElement {
+    const handle = document.createElement("div");
+    handle.className = "keyosd-resize-handle";
+    handle.innerHTML = `
+      <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+        <line x1="13" y1="2" x2="2" y2="13"/>
+        <line x1="13" y1="6" x2="6" y2="13"/>
+        <line x1="13" y1="10" x2="10" y2="13"/>
+      </svg>
+    `;
+    return handle;
   }
 
   private createDisplayArea(): HTMLElement {
@@ -147,6 +164,7 @@ export class KeyOSD {
 
   private async init(): Promise<void> {
     this.overlay.appendChild(this.closeButton);
+    this.overlay.appendChild(this.resizeHandle);
     this.overlay.appendChild(this.displayArea);
     this.overlay.appendChild(this.modifiersArea);
     this.container.appendChild(this.overlay);
@@ -213,6 +231,12 @@ export class KeyOSD {
     this.overlay.addEventListener("touchstart", this.handleTouchStart, {
       passive: false,
     });
+    this.resizeHandle.addEventListener("mousedown", this.handleResizeMouseDown);
+    this.resizeHandle.addEventListener(
+      "touchstart",
+      this.handleResizeTouchStart,
+      { passive: false }
+    );
     window.addEventListener("resize", this.handleResize);
     document.addEventListener("focusin", this.handleFocus);
     document.addEventListener("focusout", this.handleBlur);
@@ -239,12 +263,13 @@ export class KeyOSD {
     const constrained = this.constrainPosition(x, y);
     this.overlay.style.left = `${constrained.x}px`;
     this.overlay.style.top = `${constrained.y}px`;
+    this.overlay.style.transform = `translate(-50%, -50%) scale(${this.scale})`;
   }
 
   private constrainPosition(x: number, y: number): { x: number; y: number } {
-    // Get overlay dimensions (200px width, ~100px height)
-    const overlayWidth = 200;
-    const overlayHeight = 100;
+    // Get scaled overlay dimensions
+    const overlayWidth = 200 * this.scale;
+    const overlayHeight = 100 * this.scale;
 
     // Use clientWidth/clientHeight to exclude scrollbars
     const viewportWidth = document.documentElement.clientWidth;
@@ -560,10 +585,12 @@ export class KeyOSD {
   };
 
   private handleMouseDown = (e: MouseEvent): void => {
-    // Don't start dragging if clicking the close button
+    // Don't start dragging if clicking the close button or resize handle
     if (
       e.target === this.closeButton ||
-      this.closeButton.contains(e.target as Node)
+      this.closeButton.contains(e.target as Node) ||
+      e.target === this.resizeHandle ||
+      this.resizeHandle.contains(e.target as Node)
     ) {
       return;
     }
@@ -646,6 +673,84 @@ export class KeyOSD {
     this.updateAnchor();
   };
 
+  private handleResizeMouseDown = (e: MouseEvent): void => {
+    if (e.button !== 0) return;
+
+    this.isResizing = true;
+    this.overlay.classList.add("keyosd-resizing");
+
+    document.addEventListener("mousemove", this.handleResizeMouseMove);
+    document.addEventListener("mouseup", this.handleResizeMouseUp);
+
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  private handleResizeMouseMove = (e: MouseEvent): void => {
+    if (!this.isResizing) return;
+    this.updateScaleFromPointer(e.clientX, e.clientY);
+  };
+
+  private handleResizeMouseUp = (): void => {
+    this.isResizing = false;
+    this.overlay.classList.remove("keyosd-resizing");
+
+    document.removeEventListener("mousemove", this.handleResizeMouseMove);
+    document.removeEventListener("mouseup", this.handleResizeMouseUp);
+  };
+
+  private handleResizeTouchStart = (e: TouchEvent): void => {
+    if (e.touches.length !== 1) return;
+
+    this.isResizing = true;
+    this.overlay.classList.add("keyosd-resizing");
+
+    document.addEventListener("touchmove", this.handleResizeTouchMove, {
+      passive: false,
+    });
+    document.addEventListener("touchend", this.handleResizeTouchEnd);
+
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  private handleResizeTouchMove = (e: TouchEvent): void => {
+    if (!this.isResizing || e.touches.length !== 1) return;
+    const touch = e.touches[0];
+    this.updateScaleFromPointer(touch.clientX, touch.clientY);
+    e.preventDefault();
+  };
+
+  private handleResizeTouchEnd = (): void => {
+    this.isResizing = false;
+    this.overlay.classList.remove("keyosd-resizing");
+
+    document.removeEventListener("touchmove", this.handleResizeTouchMove);
+    document.removeEventListener("touchend", this.handleResizeTouchEnd);
+  };
+
+  private updateScaleFromPointer(pointerX: number, pointerY: number): void {
+    // Calculate scale based on distance from overlay center to pointer
+    const centerX = parseFloat(this.overlay.style.left) || 0;
+    const centerY = parseFloat(this.overlay.style.top) || 0;
+
+    // Distance from center to the pointer (bottom-right direction)
+    const dx = pointerX - centerX;
+    const dy = pointerY - centerY;
+
+    // Use the larger axis ratio to determine scale
+    // Base half-dimensions are 100x50
+    const scaleX = dx / 100;
+    const scaleY = dy / 50;
+    const newScale = Math.max(0.5, Math.min(3, Math.max(scaleX, scaleY)));
+
+    this.scale = newScale;
+    // Re-apply position to update transform and constraints
+    const currentX = parseFloat(this.overlay.style.left) || 0;
+    const currentY = parseFloat(this.overlay.style.top) || 0;
+    this.setPosition(currentX, currentY);
+  }
+
   private isSecuritySensitiveField(element: HTMLElement): boolean {
     if (!(element instanceof HTMLInputElement)) return false;
 
@@ -715,10 +820,22 @@ export class KeyOSD {
     this.closeButton.removeEventListener("click", this.handleCloseButton);
     this.overlay.removeEventListener("mousedown", this.handleMouseDown);
     this.overlay.removeEventListener("touchstart", this.handleTouchStart);
+    this.resizeHandle.removeEventListener(
+      "mousedown",
+      this.handleResizeMouseDown
+    );
+    this.resizeHandle.removeEventListener(
+      "touchstart",
+      this.handleResizeTouchStart
+    );
     document.removeEventListener("mousemove", this.handleMouseMove);
     document.removeEventListener("mouseup", this.handleMouseUp);
     document.removeEventListener("touchmove", this.handleTouchMove);
     document.removeEventListener("touchend", this.handleTouchEnd);
+    document.removeEventListener("mousemove", this.handleResizeMouseMove);
+    document.removeEventListener("mouseup", this.handleResizeMouseUp);
+    document.removeEventListener("touchmove", this.handleResizeTouchMove);
+    document.removeEventListener("touchend", this.handleResizeTouchEnd);
     window.removeEventListener("resize", this.handleResize);
     document.removeEventListener("focusin", this.handleFocus);
     document.removeEventListener("focusout", this.handleBlur);

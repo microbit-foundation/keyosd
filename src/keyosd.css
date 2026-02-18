@@ -5,13 +5,14 @@
 
 .keyosd-overlay {
   position: fixed;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(1);
   z-index: 999999;
   cursor: move;
   user-select: none;
   touch-action: none;
   background: rgba(0, 0, 0, 0.85);
   border-radius: 12px;
+  overflow: hidden;
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   transition: box-shadow 0.2s ease;
@@ -29,14 +30,14 @@
 
 .keyosd-close-button {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 4px;
+  right: 4px;
   width: 32px;
   height: 32px;
   padding: 0;
   border: none;
   background: rgba(0, 0, 0, 0.6);
-  border-radius: 6px;
+  border-radius: 6px 8px 6px 6px;
   cursor: pointer;
   display: none;
   align-items: center;
@@ -49,7 +50,8 @@
   display: flex;
 }
 
-.keyosd-overlay.keyosd-dragging .keyosd-close-button {
+.keyosd-overlay.keyosd-dragging .keyosd-close-button,
+.keyosd-overlay.keyosd-resizing .keyosd-close-button {
   display: none;
 }
 
@@ -120,4 +122,49 @@
 
 .keyosd-modifier-active .keyosd-modifier-inner {
   color: #fff;
+}
+
+.keyosd-resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  cursor: nwse-resize;
+  display: none;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 6px;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.6);
+  clip-path: polygon(100% 0%, 100% 100%, 0% 100%);
+  transition: background 0.15s ease;
+}
+
+.keyosd-resize-handle:hover {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.keyosd-resize-handle:active {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.keyosd-overlay:hover .keyosd-resize-handle {
+  display: flex;
+}
+
+.keyosd-overlay.keyosd-dragging .keyosd-resize-handle {
+  display: none;
+}
+
+.keyosd-overlay.keyosd-resizing .keyosd-resize-handle {
+  display: flex;
+}
+
+.keyosd-resize-handle svg {
+  width: 14px;
+  height: 14px;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
 }
