@@ -385,6 +385,8 @@ export class KeyOSD {
       Delete: "⌦",
       Escape: "⎋",
       Tab: "⇥",
+      PageUp: "PgUp",
+      PageDown: "PgDn",
     };
 
     return codeMap[code] || null;
@@ -460,6 +462,12 @@ export class KeyOSD {
           break;
         case "Tab":
           key = "⇥";
+          break;
+        case "PageUp":
+          key = "PgUp";
+          break;
+        case "PageDown":
+          key = "PgDn";
           break;
       }
     }
