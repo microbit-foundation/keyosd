@@ -37,6 +37,10 @@
     "vite": "^5.0.8",
     "vite-plugin-dts": "^3.7.0"
   },
+  "allowScripts": {
+    "esbuild": true,
+    "fsevents": true
+  },
   "keywords": [
     "keystroke",
     "osd",
