@@ -2,6 +2,10 @@
   "name": "@microbit/keyosd",
   "version": "0.0.0-local",
   "description": "Display keystrokes and shortcuts in an on-screen overlay",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microbit-foundation/keyosd.git"
+  },
   "type": "module",
   "main": "./dist/keyosd.umd.cjs",
   "module": "./dist/keyosd.js",
